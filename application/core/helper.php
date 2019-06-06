@@ -205,10 +205,14 @@ function redirect($path = '')
     exit();
 }
 
-function get_userdata()
+function get_userdata($key = '')
 {
     if (isset($_SESSION['user'])) {
-        return $_SESSION['user'];
+        if (empty($key)) {
+            return $_SESSION['user'];
+        } else {
+            return $_SESSION['user'][$key];
+        }
     }
 }
 
