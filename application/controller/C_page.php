@@ -25,6 +25,7 @@ class C_page extends Controller
         $this->view('layouts/frontpage/header', $data);
         $this->view('frontpage/page_auth', $data);
         $this->view('layouts/frontpage/footer', $data);
+        unset_old();
     }
 
     public function logout()
@@ -37,6 +38,7 @@ class C_page extends Controller
     public function login()
     {
         $data = $_POST;
+        set_old($data);
 
         $this->validate($data, 'required', 'username_login', 'Username field is required');
         $this->validate($data, 'required', 'password_login', 'Password field is required');
@@ -71,7 +73,7 @@ class C_page extends Controller
     public function register()
     {
         $data = $_POST;
-
+        set_old($data);
         // validate registration
         $this->validate($data, 'required', 'name');
         $this->validate($data, 'required', 'address');
