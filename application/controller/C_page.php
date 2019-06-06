@@ -60,7 +60,7 @@ class C_page extends Controller
                     'username_login' => 'Username atau password salah',
                 ], 401);
             }
-            $this->set_userdata([
+            $this->setUserdata([
                 'id_user' => $result['id'],
                 'name' => $result['name'],
                 'username' => $result['username'],

@@ -40,7 +40,7 @@ class Controller {
         }
     }
 
-    public function set_userdata($data = null)
+    public function setUserdata($data = null)
     {
         $_SESSION['user'] = [];
         $_SESSION['user']['id_user'] = $data['id_user'];
