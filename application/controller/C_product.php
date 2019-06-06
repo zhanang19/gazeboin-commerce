@@ -32,14 +32,9 @@ class C_product extends Controller
     public function detail($product_slug = null)
     {
         $product = Product::get($product_slug);
-        if ($product) {
-            $data['product'] = $product;
-            Product::updateTotalView($product_slug);
-        } else {
-            # code...
-        }
         
         $data['product'] = $product ? $product : abort(404, 'Product not found :(');
+        Product::updateTotalView($product_slug);
         
         $data['related_product'] = Product::relatedProduct($product_slug);
         
@@ -53,18 +48,18 @@ class C_product extends Controller
         // Get parameter using helper
         $get_parameter = get_parameter();
         // Get current page from parameter GET
-        $page = is_array($get_parameter) && array_key_exists('page', $get_parameter) && (int) $get_parameter['page'] > 0 ? (int) $get_parameter['page'] : 1;
-        $limit = 8;
+        $page = is_array($get_parameter) && array_key_exists('page', $get_parameter) ? (int) $get_parameter['page'] : 1;
+        $limit = 4;
         $product = Product::paginateByCategory($category_slug, $page, $limit);
         $data['product'] = $product ? $product : abort(404, 'Product not found :(');
-        $data['total_page'] = (int) ceil(Product::count() / $limit);
+        $data['total_page'] = (int) ceil(Product::countByCategory($category_slug) / $limit);
         $data['current_page'] = $page;
         $data['category_slug'] = $category_slug;
         $data['popular'] = Product::popular(3);
         $data['category'] = Category::get(3);
         
         $this->view('layouts/frontpage/header', $data);
-        $this->view('frontpage/product_page', $data);
+        $this->view('frontpage/product_category_page', $data);
         $this->view('layouts/frontpage/footer', $data);
     }
 

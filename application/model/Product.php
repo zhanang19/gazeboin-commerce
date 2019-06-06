@@ -79,6 +79,14 @@ class Product
         return self::$db->countRows("products");
     }
 
+    public static function countByCategory($category_slug = '')
+    {
+        self::$db->query("SELECT COUNT(p.id) as row_count FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug");
+        self::$db->bind('category_slug', $category_slug);
+        // var_dump(self::$db->first());exit();
+        return self::$db->first()['row_count'];
+    }
+
     public static function popular($limit = 1)
     {
         self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category ORDER BY p.views DESC LIMIT :limit");
