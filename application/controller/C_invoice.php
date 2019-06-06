@@ -21,7 +21,7 @@ class C_invoice extends Controller
     {
         $this->isLogin();
         $id_user = get_userdata()['id_user'];
-        $data['order'] = !empty(Order::get($id_order, $id_user)) ? Order::get($id_order, $id_user) : abort(404, "Invoice $id_order not found");
+        $data['order'] = Order::get($id_order, $id_user) ?: abort(404, "Invoice $id_order not found");
         $data['id_order'] = $id_order;
         $data['total_order'] = OrderDetail::totalPrice($id_order);
         $data['order_detail'] = OrderDetail::get($id_order);
