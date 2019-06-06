@@ -1,0 +1,14 @@
+Options -Indexes
+
+RewriteEngine On
+
+# RewriteCond %{REQUEST_URI} ^product
+# RewriteRule ^product/([0-9a-zA-Z\-]+) index.php?url=home/product/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^assets/
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php?url=$1 [L]
+
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
