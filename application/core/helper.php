@@ -235,3 +235,37 @@ function form_error($field_name = '')
         return '<span class="text-danger">'.$error_message.'</span>';
     }
 }
+
+/**
+ * Set old input
+ */
+function set_old($input)
+{
+    unset($_SESSION['old_input']);
+    $_SESSION['old_input'] = $input;
+    return true;
+}
+
+/**
+ * Unset old input
+ */
+function unset_old()
+{
+    if (isset($_SESSION['old_input'])) {
+        unset($_SESSION['old_input']);
+    }
+}
+
+/**
+ * Get old input
+ */
+function old($field_name = '', $default_value = null)
+{
+    if (isset($_SESSION['old_input'][$field_name])) {
+        $old_input = $_SESSION['old_input'][$field_name];
+        unset($_SESSION['old_input'][$field_name]);
+        return $old_input;
+    } else {
+        return $default_value;
+    }
+}
