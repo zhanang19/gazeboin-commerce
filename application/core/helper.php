@@ -216,10 +216,10 @@ function get_userdata($key = '')
     }
 }
 
-function set_form_error($field_name = '')
+function set_form_error($field_name = '', $error_message)
 {
     if (! isset($_SESSION['form_error'][$field_name])) {
-        # code...
+        $_SESSION['form_error'][$field_name] = $error_message;
     }
     return true;
 }
@@ -230,6 +230,8 @@ function set_form_error($field_name = '')
 function form_error($field_name = '')
 {
     if (isset($_SESSION['form_error'][$field_name]) && ! empty($_SESSION['form_error'][$field_name])) {
-        return $_SESSION['form_error'][$field_name];
+        $error_message = $_SESSION['form_error'][$field_name];
+        unset($_SESSION['form_error'][$field_name]);
+        return '<span class="text-danger">'.$error_message.'</span>';
     }
 }
