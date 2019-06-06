@@ -127,4 +127,51 @@ class Controller {
         return false;
     }
 
+    public function validate($data, $rule, $field_name, $message = null)
+    {
+        switch ($rule) {
+            case 'required':
+                if (! isset($data[$field_name]) or ! $this->havedata($data[$field_name])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field is required';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'valid_email':
+                if (! preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $data[$field_name])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field must be a valid email address';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'unique_username':
+                if (! User::checkUsername($data[$field_name])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field must be unique. Try another one.';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'unique_email':
+                if (! User::checkEmail($data[$field_name])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field must be unique. Try another one.';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'confirmed':
+                if (isset($data[$field_name]) && isset($data[$field_name.'_confirmation']) && $data[$field_name] !== $data[$field_name.'_confirmation']) {
+                    if (! array_key_exists($field_name.'_confirmation', $this->error)) {
+                        $this->error[$field_name.'_confirmation'] = $message ?? ucwords($field_name) . ' Confirmation field must be match';
+                        $_SESSION['form_error'][$field_name.'_confirmation'] = $this->error[$field_name.'_confirmation'];
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }
