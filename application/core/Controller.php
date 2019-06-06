@@ -50,6 +50,17 @@ class Controller {
         $_SESSION['user']['is_login'] = true;
     }
 
+    public function getUserdata($key = '')
+    {
+        if (isset($_SESSION['user'])) {
+            if (empty($key)) {
+                return $_SESSION['user'];
+            } else {
+                return $_SESSION['user'][$key];
+            }
+        }
+    }
+
     public function isAdmin()
     {
         if (isset($_SESSION['user']) && $_SESSION['user']['is_login'] === true) {
