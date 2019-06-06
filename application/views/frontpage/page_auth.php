@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="md-form">
-                            <input type="email" id="email" name="email" class="form-control">
+                            <input type="text" id="email" name="email" class="form-control">
                             <label for="email">Email</label>
                             <div class="invalid-feedback"></div>
                         </div>
@@ -74,11 +74,13 @@
                         <div class="md-form">
                             <input type="text" name="username_login" id="username_login" class="form-control">
                             <label for="username_login">Username</label>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <div class="md-form">
                             <input type="password" name="password_login" id="password_login" class="form-control">
                             <label for="password_login">Password</label>
+                            <div class="invalid-feedback"></div>
                         </div>
                         
                         <button class="btn btn-primary btn-lg btn-block mt-4" type="submit">Login</button>
@@ -127,6 +129,9 @@
                 },
                 error: function (xhr, status, error) {
                     console.log(xhr)
+                    $.each(xhr.responseJSON, function (key, value) { 
+                        $('#'+key).addClass('is-invalid').next().next().html(value)
+                    });
                 }
             });
         });
