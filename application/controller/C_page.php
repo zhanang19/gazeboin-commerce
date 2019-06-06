@@ -189,6 +189,7 @@ class C_page extends Controller
             redirect('invoice/detail/' . $id_order);
         } else {
             set_flashdata('Request Failed', 'Failed to create an order', 'error');
+            redirect('page/cart');
         }
         
     }
