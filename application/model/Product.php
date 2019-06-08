@@ -16,6 +16,12 @@ class Product
         self::$db = new Database;
     }
 
+    public static function all()
+    {
+        self::$db->query("SELECT * FROM products");
+        return self::$db->fetch();
+    }
+
     public static function paginate($page = 1, $limit = 8)
     {
         $offset = $page - 1;

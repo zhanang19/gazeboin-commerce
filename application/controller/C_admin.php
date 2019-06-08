@@ -210,6 +210,11 @@ class C_admin extends Controller
         $id_user = $this->getUserdata('id_user');
         switch ($action) {
             case 'index':
+                $data['products'] = Product::all();
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/product/index', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
                 break;
             default:
                 break;
