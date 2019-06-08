@@ -46,13 +46,32 @@ class User
         return self::$db->affectedRows();
     }
 
-    public function update($id = 0, $data = [])
+    public static function update($id = 0, $data = [])
     {
+        if (empty($data['level']) or ! $data['level'] === 1 or ! $data['level'] === '1') {
+            $data['level'] = 2;
+        }
         self::$db->query("UPDATE users SET name = :name, address = :address, level = :level WHERE id = :id");
         self::$db->bind('id', $id);
         self::$db->bind('name', $data['name']);
         self::$db->bind('address', $data['address']);
         self::$db->bind('level', $data['level']);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
+    public static function block($id = 0)
+    {
+        self::$db->query("UPDATE users SET status = 0 WHERE id = :id");
+        self::$db->bind('id', $id);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
+    public static function unblock($id = 0)
+    {
+        self::$db->query("UPDATE users SET status = 1 WHERE id = :id");
+        self::$db->bind('id', $id);
         self::$db->execute();
         return self::$db->affectedRows();
     }

@@ -52,12 +52,18 @@
                                                 <span class="badge badge-<?= $user['status'] === '1' ? 'success' : 'danger' ?>"><?= $user['status'] === '1' ? 'Active' : 'Inactive' ?></span>
                                             </td>
                                             <td>
-                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('user/edit/1') ?>" title="Edit User">
+                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/user/edit/' . $user['id']) ?>" title="Edit User">
                                                     <i class="material-icons">edit</i>
                                                 </a>
-                                                <a class="btn btn-danger btn-just-icon btn-link btn-edit" href="<?= base_url('user/delete/1') ?>" title="Delete User">
-                                                    <i class="material-icons">delete</i>
+                                                <?php if ($user['status'] === '1') : ?>
+                                                <a class="btn btn-danger btn-just-icon btn-link btn-edit" href="<?= base_url('admin/user/block/' . $user['id']) ?>" title="Block User">
+                                                    <i class="material-icons">close</i>
                                                 </a>
+                                                <?php else : ?>
+                                                <a class="btn btn-info btn-just-icon btn-link btn-edit" href="<?= base_url('admin/user/unblock/' . $user['id']) ?>" title="Unblock User">
+                                                    <i class="material-icons">check</i>
+                                                </a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
