@@ -19,12 +19,17 @@ class C_invoice extends Controller
 
     public function detail($id_order = 0)
     {
-        $this->isLogin();
-        $id_user = get_userdata()['id_user'];
+        $id_user = $this->getUserdata('id_user');
+        $data['id_user'] = $id_user;
         $data['order'] = Order::get($id_order, $id_user) ?: abort(404, "Invoice $id_order not found");
         $data['id_order'] = $id_order;
-        $data['total_order'] = OrderDetail::totalPrice($id_order);
+        $data['total_order'] = OrderDetail::totalPrice($id_order) + $id_user;
         $data['order_detail'] = OrderDetail::get($id_order);
+        if ($data['order']['status'] === 'paid') {
+            foreach ($data['order_detail'] as $key => $row) {
+                $data['order_detail'][$key]['token'] = encrypt($id_user . '::' . $row['product_slug']);
+            }
+        }
         
         $data['total_price'] = Cart::totalPrice($id_user);
         $this->view('layouts/frontpage/header', $data);
@@ -34,8 +39,7 @@ class C_invoice extends Controller
 
     public function confirm($id_order = 0)
     {
-        $this->isLogin();
-        $id_user = get_userdata()['id_user'];
+        $id_user = $this->getUserdata('id_user');
         if (empty(Order::get($id_order, $id_user))) {
             abort(404, "Invoice $id_order not found");
         }
