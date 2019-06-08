@@ -106,7 +106,7 @@ function has_flashdata()
 }
 
 /**
- * Return the flashdata
+ * Return the flashdata as toast
  */
 function get_flashdata()
 {
