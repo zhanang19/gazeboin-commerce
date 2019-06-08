@@ -16,6 +16,12 @@ class Category
         self::$db = new Database;
     }
 
+    public static function all()
+    {
+        self::$db->query("SELECT * FROM categories");
+        return self::$db->fetch();
+    }
+
     public static function get($limit = 0)
     {
         self::$db->query("SELECT * FROM categories LIMIT :limit");

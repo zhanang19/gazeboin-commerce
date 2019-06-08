@@ -137,4 +137,21 @@ class C_admin extends Controller
                 abort(404, 'Action not found');
         }
     }
+
+    public function category($action = 'index', $id = 0)
+    {
+        $id_user = $this->getUserdata('id_user');
+        switch ($action) {
+            case 'index':
+                $data['categories'] = Category::all();
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/category/index', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            default:
+                break;
+        }
+    }
+    
 }
