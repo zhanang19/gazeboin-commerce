@@ -149,6 +149,35 @@ class C_admin extends Controller
                 $this->view('layouts/panel/footer', $data);
                 unset_old();
                 break;
+            case 'create':
+                $data = [];
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/category/create', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            case 'store':
+                $request = $_POST;
+                set_old($request);
+                $this->validate($request, 'required', 'category_name');
+                if (! empty($this->error)) {
+                    redirect('admin/category/create');
+                }
+                $category_slug = slug($request['category_name']);
+                $available_slug = Category::checkSlug($category_slug);
+                if ($available_slug) {
+                    $category_slug .= '-' . time();
+                }
+                $request['category_slug'] = $category_slug;
+                $result = Category::create($request);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Category created successfully', 'success');
+                    redirect('admin/category');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to create the category', 'error');
+                    redirect('admin/category/create');
+                }
+                break;
             default:
                 break;
         }
