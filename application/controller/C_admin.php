@@ -79,7 +79,7 @@ class C_admin extends Controller
                 }
                 break;
             case 'edit':
-                $data['user'] = User::get($id) ?: abort(404, "User with ID $id not found");
+                $data['user'] = User::get($id) ?: abort(404, "Category with ID $id not found");
                 $this->view('layouts/panel/header', $data);
                 $this->view('admin_panel/user/edit', $data);
                 $this->view('layouts/panel/footer', $data);
@@ -178,9 +178,41 @@ class C_admin extends Controller
                     redirect('admin/category/create');
                 }
                 break;
+            case 'edit':
+                $data['category']= Category::getByID($id) ?: abort(404, "Category with ID $id not found");
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/category/edit', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            case 'update':
+                $request = $_POST;
+                set_old($request);
+                $this->validate($request, 'required', 'category_name');
+                if (! empty($this->error)) {
+                    redirect('admin/category/edit/' . $request['id']);
+                }
+                $result = Category::update($request['id'], $request);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Category updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update the category', 'error');
+                }
+                redirect('admin/category');
+                break;
             default:
                 break;
         }
     }
     
+    public function product($action = 'index', $id = 0)
+    {
+        $id_user = $this->getUserdata('id_user');
+        switch ($action) {
+            case 'index':
+                break;
+            default:
+                break;
+        }
+    }
 }
