@@ -269,3 +269,22 @@ function old($field_name = '', $default_value = null)
         return $default_value;
     }
 }
+
+function download($file = '')
+{
+    if (! headers_sent()) {
+        if (! is_file($file)) {
+            abort(404, 'File not found. Please contact admin.');
+        }
+        if (! is_readable($file)) {
+            abort(403, 'File not readable. Please contact admin.');
+        } else {
+            header('Content-Type: application/zip');
+            header('Content-Transfer-Encoding: Binary');
+            header('Content-Length: ' . filesize($file));
+            header('Content-Disposition: attachment; filename="' . basename($file) . '"');
+            readfile($file);
+            exit;
+        }
+    }
+}
