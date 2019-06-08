@@ -30,7 +30,7 @@ class C_page extends Controller
 
     public function logout()
     {
-        $this->unset_userdata();
+        $this->unsetUserdata();
         redirect('page/auth');
     }
 
