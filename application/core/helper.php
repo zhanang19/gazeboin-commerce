@@ -49,7 +49,7 @@ function slug($string = '')
 }
 
 /**
- * Send http error code and send error page view
+ * Send http error code and error page view
  */
 function abort($error_code = 404, $message = '', $title = '', $trace = '')
 {
@@ -150,43 +150,7 @@ function get_parameter()
 }
 
 /**
- * Fungsi ini berfungsi untuk memeriksa apakah suatu variabel sudah diset atau belum
- * serta memeriksa apakah isinya bukan null atau whitespace
- * 
- * @param String $data berisi data yang akan diperiksa
- * 
- * @return boolean
- */
-function haveData($data)
-{
-    if (isset($data) && $data !== "" && ! empty($data)) {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Fungsi ini berfungsi untuk mengatur
- * 
- * @param String $key berupa indeks alias nama field yang error
- * @param String $message berupa isi pesan error
- * 
- * @return void
- */
-function setErrorMessage($key, $message)
-{
-    // ambil variabel global untuk diperbarui,
-    // ini dilakukan karena php menganut variable scope
-    global $error, $is_error;
-    // Mencegah pesan error yg sudah ada di replace
-    if (! array_key_exists($key, $error)) {
-        $error[$key] = $message;
-    }
-    $is_error = true;
-}
-
-/**
- * Use this method to check user in admin panel
+ * Use this helper to check user in admin panel on view
  */
 function isLogin()
 {
@@ -197,7 +161,7 @@ function isLogin()
 }
 
 /**
- * Redirect
+ * Redirect helper, useful to redirect user, created only to simplify code
  */
 function redirect($path = '')
 {
@@ -205,6 +169,9 @@ function redirect($path = '')
     exit();
 }
 
+/**
+ * Get userdata helper, this helper created cause needed on view
+ */
 function get_userdata($key = '')
 {
     if (isset($_SESSION['user'])) {
@@ -216,6 +183,9 @@ function get_userdata($key = '')
     }
 }
 
+/**
+ * Set form error, useful in generating error to user
+ */
 function set_form_error($field_name = '', $error_message)
 {
     if (! isset($_SESSION['form_error'][$field_name])) {
@@ -270,6 +240,9 @@ function old($field_name = '', $default_value = null)
     }
 }
 
+/**
+ * Encryption helper, use openssl instead of mcrypt cause need encryption and decrytion feature
+ */
 function encrypt($data = '')
 {
     $key = base64_decode(APP_KEY);
@@ -285,6 +258,9 @@ function encrypt($data = '')
     return base64_encode($encryptedData.$separator.$iv);
 }
 
+/**
+ * Decryption helper, use openssl instead of mcrypt cause need encryption and decrytion feature
+ */
 function decrypt($data = '')
 {
     $key = base64_decode(APP_KEY);
@@ -300,6 +276,9 @@ function decrypt($data = '')
     return openssl_decrypt($encryptedData, $cipher_method, $key, 0, $iv);
 }
 
+/**
+ * Download helper, to download zip file
+ */
 function download($file = '')
 {
     if (! headers_sent()) {

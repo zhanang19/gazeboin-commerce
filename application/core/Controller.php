@@ -9,11 +9,17 @@
 
 class Controller {
 
+    /**
+     * Error attribute to save error state
+     */
     protected $error = [];
 
-    public function view($view_name, $data = [])
+    /**
+     * Method to include a view
+     */
+    public function view($view_name = '', $data = [])
     {
-        $view_path = '../application/views/' . $view_name . '.php';
+        $view_path = VIEWS . $view_name . '.php';
         try {
             if (! file_exists($view_path)) {
                 throw new Exception("View <code>$view_name</code> not found", 1);
@@ -25,9 +31,12 @@ class Controller {
         }
     }
 
-    public function model($model_name)
+    /**
+     * Method to create a model instance
+     */
+    public function model($model_name = '')
     {
-        $model_path = '../application/model/' . $model_name . '.php';
+        $model_path = APP . 'model/' . $model_name . '.php';
         try {
             if (! file_exists($model_path)) {
                 throw new Exception("Model <code>$model_name</code> not found", 1);
@@ -40,6 +49,9 @@ class Controller {
         }
     }
 
+    /**
+     * Method to set userdata, useful after login
+     */
     public function setUserdata($data = null)
     {
         $_SESSION['user'] = [];
@@ -50,6 +62,9 @@ class Controller {
         $_SESSION['user']['is_login'] = true;
     }
 
+    /**
+     * Method to get userdata
+     */
     public function getUserdata($key = '')
     {
         if (isset($_SESSION['user'])) {
@@ -61,6 +76,9 @@ class Controller {
         }
     }
 
+    /**
+     * Method to check the logged in user is admin, useful
+     */
     public function isAdmin()
     {
         if (isset($_SESSION['user']) && $_SESSION['user']['is_login'] === true) {
@@ -72,7 +90,7 @@ class Controller {
     }
 
     /**
-     * Use this method to check user in admin panel
+     * Use this method to check user when access a page that must login before`
      */
     public function isLogin()
     {
@@ -97,12 +115,18 @@ class Controller {
             redirect('user/dashboard');
         }
     }
-
-    public function unset_userdata()
+    
+    /**
+     * Method to unset session userdata, useful to logout the user
+     */
+    public function unsetUserdata()
     {
         session_destroy();
     }
 
+    /**
+     * Method to return json type of data
+     */
     public function json($data = [], $http_code = 200)
     {
         http_response_code($http_code);
@@ -112,12 +136,7 @@ class Controller {
     }
 
     /**
-     * Fungsi ini berfungsi untuk memeriksa apakah suatu variabel sudah diset atau belum
-     * serta memeriksa apakah isinya bukan null atau whitespace
-     * 
-     * @param String $data berisi data yang akan diperiksa
-     * 
-     * @return boolean
+     * Method to check is the data exist, useful to check user input when the rule is required
      */
     public function haveData($data)
     {
@@ -126,7 +145,9 @@ class Controller {
         }
         return false;
     }
-
+    /**
+     * Method to validate user input
+     */
     public function validate($data, $rule, $field_name, $message = null)
     {
         switch ($rule) {
@@ -145,6 +166,17 @@ class Controller {
                         $_SESSION['form_error'][$field_name] = $this->error[$field_name];
                     }
                 }
+                break;
+            case 'valid_url':
+                // Regex pattern from urlregex.com
+                if (! preg_match('%^(?:(?:https?|ftp)://)(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu', $data[$field_name])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field must be a valid email address';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'valid':
                 break;
             case 'unique_username':
                 if (! User::checkUsername($data[$field_name])) {
