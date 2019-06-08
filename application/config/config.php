@@ -16,7 +16,7 @@ define('DB_NAME', 'shop_id');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
 define('BASEURL', 'http://shop.id/');
-
+define('APP_KEY', 'duisveniaminquisex');
 switch (ENV) {
     case 'local':
         error_reporting(E_ALL|E_STRICT);

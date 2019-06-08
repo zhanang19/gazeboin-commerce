@@ -270,6 +270,36 @@ function old($field_name = '', $default_value = null)
     }
 }
 
+function encrypt($data = '')
+{
+    $key = base64_decode(APP_KEY);
+    $cipher_method = 'AES-256-CBC';
+    $separator = '::';
+    $iv_length = openssl_cipher_iv_length($cipher_method);
+
+    $iv = base64_encode(openssl_random_pseudo_bytes($iv_length));
+    $iv = substr($iv, 0, $iv_length);
+
+    $encryptedData = openssl_encrypt($data, $cipher_method, $key, 0, $iv);
+
+    return base64_encode($encryptedData.$separator.$iv);
+}
+
+function decrypt($data = '')
+{
+    $key = base64_decode(APP_KEY);
+    $cipher_method = 'AES-256-CBC';
+    $separator = '::';
+    $iv_length = openssl_cipher_iv_length($cipher_method);
+    $encodedData = base64_decode($data);
+    list($encryptedData, $iv) = strpos($encodedData, $separator) ? explode($separator, $encodedData, 2) : abort(404, 'Encrypted data not valid');
+    // list($encryptedData, $iv) = explode($separator, $encodedData, 2);
+    $iv = substr($iv, 0, $iv_length);
+
+    error_reporting(0);
+    return openssl_decrypt($encryptedData, $cipher_method, $key, 0, $iv);
+}
+
 function download($file = '')
 {
     if (! headers_sent()) {
