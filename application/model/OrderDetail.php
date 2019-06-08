@@ -28,7 +28,7 @@ class OrderDetail
 
     public static function get($id_order = 0)
     {
-        self::$db->query("SELECT od.product_price AS price, p.product_name FROM order_detail AS od JOIN products AS p ON p.product_slug = od.product_slug WHERE od.id_order = :id_order");
+        self::$db->query("SELECT od.id, od.product_price AS price, p.product_name, p.product_slug FROM order_detail AS od JOIN products AS p ON p.product_slug = od.product_slug WHERE od.id_order = :id_order");
         self::$db->bind('id_order', $id_order);
         // var_dump(self::$db->fetch());exit();
         return self::$db->fetch();
