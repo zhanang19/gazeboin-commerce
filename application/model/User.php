@@ -25,12 +25,16 @@ class User
 
     public static function create($data = [])
     {
-        self::$db->query("INSERT INTO users (name, address, email, username, password) VALUES (:name, :address, :email, :username, :password)");
+        if (empty($data['level']) or $data['level'] !== 1 or $data['level'] !== '1') {
+            $data['level'] = 2;
+        }
+        self::$db->query("INSERT INTO users (name, address, email, username, password, level) VALUES (:name, :address, :email, :username, :password, :level)");
         self::$db->bind('name', $data['name']);
         self::$db->bind('address', $data['address']);
         self::$db->bind('email', strtolower($data['email']));
         self::$db->bind('username', strtolower($data['username']));
         self::$db->bind('password', $data['password']);
+        self::$db->bind('level', $data['level']);
         self::$db->execute();
         return self::$db->affectedRows();
     }
