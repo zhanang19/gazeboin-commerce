@@ -153,4 +153,22 @@ class C_page extends Controller
         echo "Halaman Terms and Condition";
     }
 
+    public function download($token = '')
+    {
+        $this->isLogin();
+        if (empty($token)) {
+            abort(404, 'Token not found!');
+        } else {
+            $token = decrypt($token);
+            $token = strpos($token, '::') ? explode('::', $token) : abort(404, 'Invalid token! Make sure you are insert a link correctly.');
+            $id_user = $this->getUserdata('id_user');
+            if (! $id_user === $token[0]) {
+                error_log('User with ID ' . $id_user . ' trying to steal a product file from IP Address ' . $_SERVER['REMOTE_ADDR']);
+                abort(401, 'Hey, please don\'t try to steal. You\'re reported!');
+            }
+            $product_slug = $token[1];
+            $file = ASSET . $product_slug . '.zip';
+            download($file);
+        }
+    }
 }
