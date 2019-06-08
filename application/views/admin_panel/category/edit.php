@@ -1,0 +1,46 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: zhanang19
+ * Date: 05/06/2019
+ * Time: 18:11
+ * Project: e-commerce
+ */
+?>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-rose card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">label</i>
+                            </div>
+                            <h4 class="card-title">Edit Category</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="<?= base_url('admin/category/update') ?>" method="post">
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <input type="hidden" name="id" value="<?= $data['category']['id'] ?>">
+                                        <div class="form-group">
+                                            <label for="category_name">Name</label>
+                                            <input name="category_name" type="text" class="form-control" value="<?= old('category_name', $data['category']['category_name']) ?>">
+                                            <?= form_error('category_name') ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 text-right">
+                                        <button type="button" class="btn btn-default" onclick="javascript:history.back()">Back</button>
+                                        <button type="submit" class="btn btn-rose">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

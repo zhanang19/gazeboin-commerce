@@ -42,11 +42,28 @@ class Category
         }
         return false;
     }
+
+    public static function update($id = 0, $data = [])
+    {
+        self::$db->query("UPDATE categories SET category_name = :category_name WHERE id = :id");
+        self::$db->bind('category_name', $data['category_name']);
+        self::$db->bind('id', $id);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
     public static function get($limit = 0)
     {
         self::$db->query("SELECT * FROM categories LIMIT :limit");
         self::$db->bind('limit', $limit);
         return self::$db->fetch();
+    }
+
+    public static function getByID($id = 0)
+    {
+        self::$db->query("SELECT * FROM categories WHERE id = :id");
+        self::$db->bind('id', $id);
+        return self::$db->first();
     }
 
     public static function count()
