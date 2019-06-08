@@ -86,24 +86,29 @@
 
 			<!-- Right -->
 			<ul class="navbar-nav nav-flex-icons">
-				<li class="nav-item">
+				<li class="nav-item mx-1">
 					<a class="nav-link waves-effect" href="<?= base_url('page/cart') ?>">
-						<!-- <span class="badge red z-depth-1 mr-1"><?= $data['cart_count'] ?? '0' ?></span> -->
-						<i class="fas fa-shopping-cart"></i>
-						<span class="clearfix d-none d-sm-inline-block">Cart</span>
+						<i class="fas fa-shopping-cart"></i> Cart
 					</a>
 				</li>
-				<li class="nav-item">
-					<?php if (! isLogin()) : ?>
+				<?php if (! isLogin()) : ?>
+				<li class="nav-item mx-1">
 					<a href="<?= base_url('page/auth') ?>" class="nav-link border border-light rounded waves-effect">
 						<i class="fa fa-sign-in-alt mr-2"></i> Login/Register
 					</a>
-					<?php else: ?>
+				</li>
+				<?php else: ?>
+				<li class="nav-item mx-1">
+					<a href="<?= get_userdata('level') === '1' ? base_url('admin/dashboard') : base_url('user/dashboard') ?>" class="nav-link waves-effect">
+						<i class="fa fa-tachometer-alt mr-2"></i> Dashboard
+					</a>
+				</li>
+				<li class="nav-item mx-1">
 					<a href="<?= base_url('page/logout') ?>" class="nav-link border border-light rounded waves-effect">
 						<i class="fa fa-sign-in-alt mr-2"></i> Logout
 					</a>
-					<?php endif; ?>
 				</li>
+				<?php endif; ?>
 			</ul>
 
 		</div>
