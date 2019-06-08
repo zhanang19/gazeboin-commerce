@@ -23,6 +23,13 @@ class User
         return self::$db->fetch();
     }
 
+    public static function get($id = 0)
+    {
+        self::$db->query("SELECT * FROM users WHERE id = :id");
+        self::$db->bind('id', $id);
+        return self::$db->first();
+    }
+
     public static function create($data = [])
     {
         if (empty($data['level']) or $data['level'] !== 1 or $data['level'] !== '1') {
@@ -34,6 +41,17 @@ class User
         self::$db->bind('email', strtolower($data['email']));
         self::$db->bind('username', strtolower($data['username']));
         self::$db->bind('password', $data['password']);
+        self::$db->bind('level', $data['level']);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
+    public function update($id = 0, $data = [])
+    {
+        self::$db->query("UPDATE users SET name = :name, address = :address, level = :level WHERE id = :id");
+        self::$db->bind('id', $id);
+        self::$db->bind('name', $data['name']);
+        self::$db->bind('address', $data['address']);
         self::$db->bind('level', $data['level']);
         self::$db->execute();
         return self::$db->affectedRows();
