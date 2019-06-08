@@ -32,7 +32,7 @@ class User
 
     public static function create($data = [])
     {
-        if (empty($data['level']) or $data['level'] !== 1 or $data['level'] !== '1') {
+        if (empty($data['level']) or ! $data['level'] === 1 or ! $data['level'] === '1') {
             $data['level'] = 2;
         }
         self::$db->query("INSERT INTO users (name, address, email, username, password, level) VALUES (:name, :address, :email, :username, :password, :level)");
