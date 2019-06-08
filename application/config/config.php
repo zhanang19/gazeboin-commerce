@@ -9,6 +9,7 @@
 
 define('ENV', 'local');
 define('APP', '../application/');
+define('ASSET', '../assets/');
 define('VIEWS', APP . 'views/');
 define('DB_HOST', 'localhost');
 define('DB_PORT', 3306);
