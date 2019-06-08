@@ -46,7 +46,7 @@ class C_admin extends Controller
                 unset_old();
                 break;
             case 'create':
-                $data['users'] = User::all();
+                $data = [];
                 $this->view('layouts/panel/header', $data);
                 $this->view('admin_panel/user/create', $data);
                 $this->view('layouts/panel/footer', $data);
