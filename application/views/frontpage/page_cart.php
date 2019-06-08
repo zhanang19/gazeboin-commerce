@@ -28,7 +28,7 @@
                                 <small class="text-muted"><a href="<?= base_url('product/detail/' . $product['product_slug']) ?>">Detail Produk</a></small>
                             </div>
                         </div>
-                        <h6 class="mt-2 text-muted">Rp. <?= number_format($product['product_price'], 0, ',', '.') ?></h6>
+                        <h6 class="mt-2 text-muted">Rp. <?= number_format((int) $product['product_price'], 0, ',', '.') ?></h6>
                         <a href="<?= base_url('cart/remove/' . $product['product_slug']) ?>" class="btn btn-danger btn-sm p-3">
                             <i class="fas fa-trash-alt"></i>
                         </a>
@@ -55,7 +55,7 @@
                 <ul class="list-group mb-3 z-depth-1 my-4">
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <span>Total</span>
-                        <strong class="text-secondary">Rp. <?= number_format($data['total_price'], 0, ',', '.') ?></strong>
+                        <strong class="text-secondary">Rp. <?= number_format((int) $data['total_price'], 0, ',', '.') ?></strong>
                     </li>
                 </ul>
             </div>
