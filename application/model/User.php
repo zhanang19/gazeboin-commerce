@@ -76,7 +76,7 @@ class User
 
     public static function count()
     {
-        return self::$db->countRows("categories");
+        return self::$db->countRows("users");
     }
 
 }
