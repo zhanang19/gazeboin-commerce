@@ -65,25 +65,47 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Item list</th>
-                                    <th style="text-align: right">Total price</th>
+                            <thead class="table-primary table-bordered">
+                                <tr class="text-center">
+                                    <th class="font-weight-bold" style="width:60%">Item list</th>
+                                    <?php if ($data['order']['status'] === 'paid') : ?>
+                                    <th class="font-weight-bold d-print-none">Link</th>
+                                    <?php endif; ?>
+                                    <th class="font-weight-bold">Price</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php foreach ($data['order_detail'] as $row) : ?>
+                            <tbody class="table-bordered">
+                                <?php foreach ($data['order_detail'] as $key => $row) : ?>
                                 <tr>
                                     <td><?= $row['product_name'] ?></td>
+                                    <?php if ($data['order']['status'] === 'paid') : ?>
+                                    <td class="text-center d-print-none">
+                                        <a class="btn btn-primary btn-sm" href="<?= base_url('page/download/' . $row['token']) ?>">
+                                            <i class="fa fa-download"></i>
+                                            <span class="d-none d-md-inline-block">Download</span>
+                                        </a>
+                                    </td>
+                                    <?php endif; ?>
                                     <td style="text-align: right">Rp. <?= number_format($row['price'], 0, ',', '.') ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
+                            <tfoot class="table-info">
+                                <tr>
+                                    <td class="font-weight-bold" colspan="2" style="width: 80%">SUBTOTAL</td>
+                                    <td class="text-right">Rp. <?= number_format($data['total_order'] - $data['id_user'], 0, ',', '.') ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold" colspan="2" style="width: 80%">UNIQUE CODE</td>
+                                    <td class="text-right">Rp. <?= number_format($data['id_user'], 0, ',', '.') ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold" colspan="2" style="width: 80%">TOTAL</td>
+                                    <td class="text-right">Rp. <?= number_format($data['total_order'], 0, ',', '.') ?></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
-                    <ul class="list-unstyled text-right">
-                        <li><strong>TOTAL:</strong><span class="float-right ml-3">Rp. <?= number_format($data['total_order'], 0, ',', '.') ?></span></li>
-                    </ul>
                 </div>
             </div>
         </section>
