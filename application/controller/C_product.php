@@ -51,7 +51,7 @@ class C_product extends Controller
         $page = is_array($get_parameter) && array_key_exists('page', $get_parameter) ? (int) $get_parameter['page'] : 1;
         $limit = 4;
         $product = Product::paginateByCategory($category_slug, $page, $limit);
-        $data['product'] = $product ? $product : abort(404, 'Product not found :(');
+        $data['product'] = $product ? $product : abort(204, 'No product on this category :(');
         $data['total_page'] = (int) ceil(Product::countByCategory($category_slug) / $limit);
         $data['current_page'] = $page;
         $data['category_slug'] = $category_slug;
