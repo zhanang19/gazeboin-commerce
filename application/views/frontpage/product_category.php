@@ -121,7 +121,7 @@
 
 							<!--Card image-->
 							<div class="view overlay">
-								<img src="https://via.placeholder.com/520x650?text=<?= $product['product_name'] ?>" class="card-img-top" alt="<?= $product['product_name'] ?> Image">
+								<img src="<?= base_url('assets/uploads/' . $product['product_photo_1']) ?>" class="card-img-top" alt="<?= $product['product_name'] ?> Image">
 								<a href="<?= base_url('product/detail/') . $product['product_slug'] ?>">
 									<div class="mask rgba-white-slight"></div>
 								</a>

@@ -24,7 +24,7 @@
 
 			<?php foreach ($data['popular'] as $key => $popular) : ?>
 			<div class="carousel-item <?= $key === 0 ? ' active' : '' ?>">
-				<div class="view" style="background-image: url('https://via.placeholder.com/1300x400?text=Produk 1'); background-repeat: no-repeat; background-size: cover;">
+				<div class="view" style="background-image: url('https://via.placeholder.com/1300x400?text=Popular Product'); background-repeat: no-repeat; background-size: cover;">
 
 					<!-- Mask & flexbox options-->
 					<div class="mask rgba-black-strong d-flex justify-content-center align-items-center">
@@ -121,7 +121,7 @@
 
 							<!--Card image-->
 							<div class="view overlay">
-								<img src="https://via.placeholder.com/520x650?text=<?= $product['product_name'] ?>" class="card-img-top" alt="<?= $product['product_name'] ?> Image">
+								<img src="<?= base_url('assets/uploads/' . $product['product_photo_1']) ?>" class="card-img-top" alt="<?= $product['product_name'] ?> Image">
 								<a href="<?= base_url('product/detail/') . $product['product_slug'] ?>">
 									<div class="mask rgba-white-slight"></div>
 								</a>

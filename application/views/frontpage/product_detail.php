@@ -12,7 +12,7 @@
     <div class="container dark-grey-text mt-5">
 		<div class="row wow fadeIn">
 			<div class="col-md-6 mb-4">
-				<img src="https://via.placeholder.com/1000x600?text=<?= $data['product']['product_name'] ?>" class="img-fluid" alt="">
+				<img src="<?= base_url('assets/uploads/' . $data['product']['product_photo_1']) ?>" class="img-fluid" alt="">
 			</div>
 			<div class="col-md-6 mb-4">
 				<div class="p-4">
