@@ -208,6 +208,21 @@ class Controller {
                     }
                 }
                 break;
+            case 'image':
+                if (! exif_imagetype($_FILES[$field_name]['tmp_name'])) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' must be an image';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
+                break;
+            case 'numeric':
+                if (false) {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' must be a numeric value';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
             default:
                 break;
         }
