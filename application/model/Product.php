@@ -22,13 +22,26 @@ class Product
         return self::$db->fetch();
     }
 
+    public static function create($data = [])
+    {
+        self::$db->query("INSERT INTO products (product_name, product_slug, product_description, product_price, id_category, product_photo_1, status) VALUES (:product_name, :product_slug, :product_description, :product_price, :id_category, :product_photo_1, 1)");
+        self::$db->bind('product_name', $data['product_name']);
+        self::$db->bind('product_slug', $data['product_slug']);
+        self::$db->bind('product_description', $data['product_description']);
+        self::$db->bind('product_price', $data['product_price']);
+        self::$db->bind('id_category', $data['id_category']);
+        self::$db->bind('product_photo_1', $data['product_photo_1']);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
     public static function paginate($page = 1, $limit = 8)
     {
         $offset = $page - 1;
         if ($offset > 0) {
             $offset = $offset * $limit;
         }
-        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category LIMIT :limit OFFSET :offset");
+        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE p.status = 1 LIMIT :limit OFFSET :offset");
         self::$db->bind('limit', $limit);
         self::$db->bind('offset', $offset);
         return self::$db->fetch();
@@ -40,11 +53,10 @@ class Product
         if ($offset > 0) {
             $offset = $offset * $limit;
         }
-        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE c.category_slug = :category_slug LIMIT :limit OFFSET :offset");
+        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE c.category_slug = :category_slug AND p.status = 1 LIMIT :limit OFFSET :offset");
         self::$db->bind('category_slug', $category_slug);
         self::$db->bind('limit', $limit);
         self::$db->bind('offset', $offset);
-        // var_dump(self::$db->fetch());exit();
         return self::$db->fetch();
     }
 
@@ -65,10 +77,9 @@ class Product
 
     public static function getByCategory($category_slug = '', $limit = 8)
     {
-        self::$db->query("SELECT p.*, c.category_name, c.category_slug, c.id AS id_category FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug LIMIT :limit");
+        self::$db->query("SELECT p.*, c.category_name, c.category_slug, c.id AS id_category FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug AND p.status = 1 LIMIT :limit");
         self::$db->bind('category_slug', $category_slug);
         self::$db->bind('limit', $limit);
-        // var_dump(self::$db->fetch());exit();
         return self::$db->fetch();
     }
 
@@ -87,7 +98,7 @@ class Product
 
     public static function countByCategory($category_slug = '')
     {
-        self::$db->query("SELECT COUNT(p.id) as row_count FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug");
+        self::$db->query("SELECT COUNT(p.id) as row_count FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug AND status = 1");
         self::$db->bind('category_slug', $category_slug);
         // var_dump(self::$db->first());exit();
         return self::$db->first()['row_count'];
@@ -95,7 +106,7 @@ class Product
 
     public static function popular($limit = 1)
     {
-        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category ORDER BY p.views DESC LIMIT :limit");
+        self::$db->query("SELECT p.*, c.category_name, c.category_slug FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE p.status = 1 ORDER BY p.views DESC LIMIT :limit");
         self::$db->bind('limit', $limit);
         return self::$db->fetch();
     }

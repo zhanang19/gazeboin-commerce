@@ -216,6 +216,51 @@ class C_admin extends Controller
                 $this->view('layouts/panel/footer', $data);
                 unset_old();
                 break;
+            case 'create':
+                $data['categories'] = Category::all();
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/product/create', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            case 'store':
+                $request = $_POST;
+                set_old($request);
+                $this->validate($request, 'required', 'product_name', 'Product Name field is required');
+                $this->validate($request, 'required_file', 'product_photo_1', 'Product Photo field is required');
+                $this->validate($request, 'required', 'product_description', 'Product Description field is required');
+                $this->validate($request, 'required', 'product_price', 'Product Price field is required');
+                $this->validate($request, 'numeric', 'product_price', 'Product Price must be a numeric value');
+                $this->validate($request, 'required', 'id_category', 'Product Category field is required');
+                $this->validate($request, 'image', 'product_photo_1', 'Product photo must be an image');
+                $category_id = Category::getByID($request['id_category']);
+                if (! $category_id) {
+                    if (! array_key_exists('id_category', $this->error)) {
+                        $this->error['id_category'] = 'Product Category are invalid';
+                        $_SESSION['form_error']['id_category'] = $this->error['id_category'];
+                    }
+                }
+                if (! empty($this->error)) {
+                    redirect('admin/product/create');
+                }
+                $request['product_slug'] = slug($request['product_name']) . '-' . time();
+                $product_photo_1 = $this->upload('product_photo_1');
+                if ($product_photo_1 === false) {
+                    exit();
+                    set_flashdata('Request Failed', 'Failed to upload product photo', 'error');
+                    redirect('admin/product/create');
+                } else {
+                    $request['product_photo_1'] = $product_photo_1;
+                }
+                $result = Product::create($request);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Product created successfully', 'success');
+                    redirect('admin/product');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to create the product', 'error');
+                    redirect('admin/product/create');
+                }
+                break;
             default:
                 break;
         }
