@@ -176,7 +176,13 @@ class Controller {
                     }
                 }
                 break;
-            case 'valid':
+            case 'required_file':
+                if (empty($_FILES[$field_name]) or $_FILES[$field_name]['name'] === '') {
+                    if (! array_key_exists($field_name, $this->error)) {
+                        $this->error[$field_name] = $message ?? ucwords($field_name) . ' field is required';
+                        $_SESSION['form_error'][$field_name] = $this->error[$field_name];
+                    }
+                }
                 break;
             case 'unique_username':
                 if (! User::checkUsername($data[$field_name])) {
@@ -204,6 +210,21 @@ class Controller {
                 break;
             default:
                 break;
+        }
+    }
+
+    public function upload($input_name, $path = '', $name = '')
+    {
+        $path = $path === '' ? UPLOAD_PATH : UPLOAD_PATH . $path;
+        if(!empty($_FILES[$input_name])) {
+            $filename = md5(time() . basename($_FILES[$input_name]['name']));
+            $path = $path . $filename;
+            // var_dump($filename);exit;
+            if(move_uploaded_file($_FILES[$input_name]['tmp_name'], $path)) {
+                return $filename;
+            } else{
+                return false;
+            }
         }
     }
 }

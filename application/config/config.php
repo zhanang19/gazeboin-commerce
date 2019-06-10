@@ -10,6 +10,8 @@
 define('ENV', 'local');
 define('APP', '../application/');
 define('ASSET', '../assets/');
+define('PUBLIC_PATH', '../public/assets/');
+define('UPLOAD_PATH', '../public/assets/uploads/');
 define('VIEWS', APP . 'views/');
 define('DB_HOST', 'localhost');
 define('DB_PORT', 3306);
