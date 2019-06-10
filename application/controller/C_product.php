@@ -32,8 +32,10 @@ class C_product extends Controller
     public function detail($product_slug = null)
     {
         $product = Product::get($product_slug);
-        
-        $data['product'] = $product ? $product : abort(404, 'Product not found :(');
+        if (empty($product) or $product['status'] === '0') {
+            abort(404, 'Product not found :(');
+        }
+        $data['product'] = $product;
         Product::updateTotalView($product_slug);
         
         $data['related_product'] = Product::relatedProduct($product_slug);
