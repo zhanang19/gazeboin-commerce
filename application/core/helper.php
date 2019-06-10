@@ -45,7 +45,7 @@ function uri_string()
  */
 function slug($string = '')
 {
-    return preg_replace('/[^A-Za-z0-9-]+/', '-', $string);
+    return preg_replace('/[^A-Za-z0-9 ]+/', '-', $string);
 }
 
 /**
