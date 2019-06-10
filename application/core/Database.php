@@ -77,7 +77,15 @@ class Database
     public function fetch()
     {
         $this->execute();
-        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        $data = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        // $escapedData = [];
+        // foreach ($data as $key => $value) {
+        //     $escapedData[$key] = array_map(function ($x) {
+        //         return trim(htmlentities($x));
+        //     }, $value);
+        // }
+        // Change to escapedData to return safe value
+        return $data;
     }
 
     /**
@@ -86,18 +94,23 @@ class Database
     public function first()
     {
         $this->execute();
-        return $this->stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $this->stmt->fetch(PDO::FETCH_ASSOC);
+        // $escapedData = array_map(function ($x) {
+        //     return trim(htmlentities($x));
+        // }, $data);
+        // Change to escapedData to return safe value
+        return $data;
     }
 
     /**
      * Count total rows
      */
-    public function countRows($table = '', $where_key = '', $where_value = '')
+    public function countRows($table = '', $where_key = '', $where_value = '', $is_active = '1')
     {
         if (! empty($where_key)) {
-            $this->query("SELECT COUNT(1) AS 'row_count' FROM `$table` WHERE $where_key = $where_value");
+            $this->query("SELECT COUNT(1) AS 'row_count' FROM `$table` WHERE status = $is_active AND $where_key = $where_value");
         } else {
-            $this->query("SELECT COUNT(1) AS 'row_count' FROM `$table`");
+            $this->query("SELECT COUNT(1) AS 'row_count' FROM `$table` WHERE status = $is_active");
         }
         return $this->first()['row_count'];
     }
