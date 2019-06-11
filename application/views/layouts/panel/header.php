@@ -44,13 +44,16 @@
             <div class="sidebar-wrapper">
                 <div class="user">
                     <div class="photo">
-                        <img src="https://via.placeholder.com/150" />
+                        <img src="<?= base_url('assets/img/user.png') ?>" />
                     </div>
                     <div class="user-info">
                         <a data-toggle="collapse" data-target="#user-profile" href="javascript:void(0)" class="username">
-                            <span><?= get_userdata()['name'] ?> <b class="caret"></b></span>
+                            <span>
+                                <?= get_userdata()['name'] ?>
+                                <!-- <b class="caret"></b> -->
+                            </span>
                         </a>
-                        <div class="collapse" id="user-profile">
+                        <!-- <div class="collapse" id="user-profile">
                             <ul class="nav">
                                 <li class="nav-item">
                                     <a class="nav-link" href="<?= base_url('page/profile') ?>">
@@ -61,7 +64,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -94,9 +97,9 @@
                                     <p class="d-lg-none d-md-block">Account</p>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownProfile">
-                                    <a class="dropdown-item" href="<?= base_url('page/profile') ?>">Profile</a>
+                                    <!-- <a class="dropdown-item" href="<?= base_url('page/profile') ?>">Profile</a>
                                     <a class="dropdown-item" href="<?= base_url('page/profile') ?>">Change Password</a>
-                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-divider"></div> -->
                                     <a class="dropdown-item" href="<?= base_url('page/logout') ?>">Logout</a>
                                 </div>
                             </li>
