@@ -217,7 +217,7 @@ class Controller {
                 }
                 break;
             case 'numeric':
-                if (false) {
+                if (! is_numeric($data[$field_name])) {
                     if (! array_key_exists($field_name, $this->error)) {
                         $this->error[$field_name] = $message ?? ucwords($field_name) . ' must be a numeric value';
                         $_SESSION['form_error'][$field_name] = $this->error[$field_name];
