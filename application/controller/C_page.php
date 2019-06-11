@@ -107,7 +107,7 @@ class C_page extends Controller
     {
         $this->isLogin();
         $data = [];
-        $id_user = get_userdata()['id_user'];
+        $id_user = $this->getUserdata('id_user');
         $data['cart_count'] = Cart::count($id_user);
         $data['cart'] = Cart::all($id_user);
         $data['total_price'] = Cart::totalPrice($id_user);
