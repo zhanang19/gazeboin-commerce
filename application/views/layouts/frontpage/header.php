@@ -76,9 +76,9 @@
 				<li class="nav-item<?= current_url() === base_url() ? ' active' : '' ?>">
 					<a class="nav-link waves-effect" href="<?= base_url() ?>">Home</a>
 				</li>
-				<li class="nav-item">
+				<!-- <li class="nav-item">
 					<a class="nav-link waves-effect" href="<?= base_url('page/about-us') ?>">About Us</a>
-				</li>
+				</li> -->
 				<li class="nav-item">
 					<a class="nav-link waves-effect" href="https://gazeboin.com" target="_blank">Tryout Online</a>
 				</li>
