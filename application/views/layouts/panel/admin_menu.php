@@ -34,21 +34,9 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="collapse" href="javascript:void(0)" data-target="#menu-event" aria-expanded="false">
-                    <i class="material-icons">event</i>
-                    <p>Events<b class="caret"></b></p>
+                <a class="nav-link" href="<?= base_url('admin/order') ?>">
+                    <i class="material-icons">store</i>
+                    <p>Orders</p>
                 </a>
-                <div class="collapse" id="menu-event">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="">
-                                <span class="sidebar-mini">
-                                    <i class="material-icons">event</i>
-                                </span>
-                                <span class="sidebar-normal">All Events</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </li>
         </ul>
