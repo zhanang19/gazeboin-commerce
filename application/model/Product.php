@@ -35,6 +35,34 @@ class Product
         return self::$db->affectedRows();
     }
 
+    public static function update($product_slug = '', $data =[])
+    {
+        self::$db->query("UPDATE products SET product_name = :product_name, product_price = :product_price, product_description = :product_description, id_category = :id_category WHERE product_slug = :product_slug");
+        self::$db->bind('product_name', $data['product_name']);
+        self::$db->bind('product_slug', $data['product_slug']);
+        self::$db->bind('product_price', $data['product_price']);
+        self::$db->bind('product_description', $data['product_description']);
+        self::$db->bind('id_category', $data['id_category']);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
+    public static function activate($product_slug = '')
+    {
+        self::$db->query("UPDATE products SET status = 1 WHERE product_slug = :product_slug");
+        self::$db->bind('product_slug', $product_slug);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
+    public static function deactivate($product_slug = '')
+    {
+        self::$db->query("UPDATE products SET status = 0 WHERE product_slug = :product_slug");
+        self::$db->bind('product_slug', $product_slug);
+        self::$db->execute();
+        return self::$db->affectedRows();
+    }
+
     public static function paginate($page = 1, $limit = 8)
     {
         $offset = $page - 1;

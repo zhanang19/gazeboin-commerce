@@ -51,9 +51,18 @@
                                                 <a class="btn btn-info btn-just-icon btn-link" href="<?= base_url('product/detail/' . $row['product_slug']) ?>" title="View Product">
                                                     <i class="material-icons">remove_red_eye</i>
                                                 </a>
-                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/product/edit/' . $row['id']) ?>" title="Edit Product">
+                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/product/edit/' . $row['product_slug']) ?>" title="Edit Product">
                                                     <i class="material-icons">edit</i>
                                                 </a>
+                                                <?php if ($row['status'] === '1') : ?>
+                                                <a class="btn btn-danger btn-just-icon btn-link btn-edit" href="<?= base_url('admin/product/deactivate/' . $row['product_slug']) ?>" title="Deactivate Product">
+                                                    <i class="material-icons">close</i>
+                                                </a>
+                                                <?php else : ?>
+                                                <a class="btn btn-info btn-just-icon btn-link btn-edit" href="<?= base_url('admin/product/activate/' . $row['product_slug']) ?>" title="Activate Product">
+                                                    <i class="material-icons">check</i>
+                                                </a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>

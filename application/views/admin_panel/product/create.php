@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div style="margin-bottom:-10px">
-                                                <label for="status">Product Category</label>
+                                                <label for="id_category">Product Category</label>
                                             </div>
                                             <div class="bootstrap-select">
                                                 <select class="selectpicker" name="id_category" data-size="4" data-style="select-with-transition" data-title="Choose a category">
@@ -74,7 +74,28 @@
                                                 </select>
                                             </div>
                                             <div>
-                                                <?= form_error('product_price') ?>
+                                                <?= form_error('id_category') ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div>
+                                                <label for="file">Product File</label>
+                                            </div>
+                                            <div class="fileinput fileinput-new text-center" data-provides="fileinput">
+                                                <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                                <div>
+                                                    <span class="btn btn-rose btn-round btn-file" title="Select File">
+                                                        <span class="fileinput-new">Select File</span>
+                                                        <span class="fileinput-exists">Change File</span>
+                                                        <input type="file" name="file" />
+                                                    </span>
+                                                    <a href="javascript:void(0)" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput" title="Remove File">
+                                                        <i class="fa fa-times"></i> Remove File
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <?= form_error('file') ?>
                                             </div>
                                         </div>
                                     </div>

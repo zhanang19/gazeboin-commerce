@@ -16,6 +16,8 @@ class C_admin extends Controller
         $this->model('User');
         $this->model('Category');
         $this->model('Product');
+        $this->model('Order');
+        $this->model('OrderDetail');
     }
 
     public function index()
@@ -25,7 +27,6 @@ class C_admin extends Controller
 
     public function dashboard()
     {
-        $data = [];
         $data['total_user'] = User::count();
         $data['total_category'] = Category::count();
         $data['total_product'] = Product::count();
@@ -135,6 +136,7 @@ class C_admin extends Controller
                 break;
             default:
                 abort(404, 'Action not found');
+                break;
         }
     }
 
@@ -201,6 +203,7 @@ class C_admin extends Controller
                 redirect('admin/category');
                 break;
             default:
+                abort(404, 'Action not found');
                 break;
         }
     }
@@ -228,6 +231,7 @@ class C_admin extends Controller
                 set_old($request);
                 $this->validate($request, 'required', 'product_name', 'Product Name field is required');
                 $this->validate($request, 'required_file', 'product_photo_1', 'Product Photo field is required');
+                $this->validate($request, 'required_file', 'file', 'Product File field is required');
                 $this->validate($request, 'required', 'product_description', 'Product Description field is required');
                 $this->validate($request, 'required', 'product_price', 'Product Price field is required');
                 $this->validate($request, 'numeric', 'product_price', 'Product Price must be a numeric value');
@@ -246,12 +250,20 @@ class C_admin extends Controller
                 $request['product_slug'] = slug($request['product_name']) . '-' . time();
                 $product_photo_1 = $this->upload('product_photo_1');
                 if ($product_photo_1 === false) {
-                    exit();
                     set_flashdata('Request Failed', 'Failed to upload product photo', 'error');
                     redirect('admin/product/create');
                 } else {
                     $request['product_photo_1'] = $product_photo_1;
                 }
+                $filename = $request['product_slug'] . '.zip';
+                $file = $this->upload('file', ASSET, $filename);
+                if ($file === false) {
+                    set_flashdata('Request Failed', 'Failed to upload product file', 'error');
+                    redirect('admin/product/create');
+                } else {
+                    $request['file'] = $file;
+                }
+
                 $result = Product::create($request);
                 if ($result > 0) {
                     set_flashdata('Request Success', 'Product created successfully', 'success');
@@ -261,7 +273,81 @@ class C_admin extends Controller
                     redirect('admin/product/create');
                 }
                 break;
+            case 'edit':
+                $data['product'] = Product::get($id) ?: abort(404, 'Product not found :(');
+                $data['categories']= Category::all() ?: abort(404, "Category not found");
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/product/edit', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            case 'update':
+                $request = $_POST;
+                set_old($request);
+                $this->validate($request, 'required', 'product_name', 'Product Name field is required');
+                $this->validate($request, 'required', 'product_description', 'Product Description field is required');
+                $this->validate($request, 'required', 'product_price', 'Product Price field is required');
+                $this->validate($request, 'numeric', 'product_price', 'Product Price must be a numeric value');
+                $this->validate($request, 'required', 'id_category', 'Product Category field is required');
+                $category_id = Category::getByID($request['id_category']);
+                if (! $category_id) {
+                    if (! array_key_exists('id_category', $this->error)) {
+                        $this->error['id_category'] = 'Product Category are invalid';
+                        $_SESSION['form_error']['id_category'] = $this->error['id_category'];
+                    }
+                }
+                if (! empty($this->error)) {
+                    redirect('admin/product/create');
+                }
+                $result = Product::update($request['product_slug'], $request);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Product updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update the product', 'error');
+                }
+                redirect('admin/product');
+                break;
+            case 'activate':
+                $result = Product::activate($id);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Product activated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to activate the product', 'error');
+                }
+                redirect('admin/product');
+                break;
+            case 'deactivate':
+                $result = Product::deactivate($id);
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Product deactivated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to deactivate the product', 'error');
+                }
+                redirect('admin/product');
+                break;
             default:
+                abort(404, 'Action not found');
+                break;
+        }
+    }
+
+    public function order($action = 'index', $id = 0)
+    {
+        $id_user = $this->getUserdata('id_user');
+        switch ($action) {
+            case 'index':
+                $orders = Order::all();
+                foreach ($orders as $key => $order) {
+                    $orders[$key]['total_price'] = OrderDetail::totalPrice($order['id']) + $order['id_user'];
+                }
+                $data['orders'] = $orders;
+                $this->view('layouts/panel/header', $data);
+                $this->view('admin_panel/order/index', $data);
+                $this->view('layouts/panel/footer', $data);
+                unset_old();
+                break;
+            default:
+                abort(404, 'Action not found');
                 break;
         }
     }

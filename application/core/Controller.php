@@ -230,9 +230,13 @@ class Controller {
 
     public function upload($input_name, $path = '', $name = '')
     {
-        $path = $path === '' ? UPLOAD_PATH : UPLOAD_PATH . $path;
+        $path = $path === '' ? UPLOAD_PATH : $path;
         if(!empty($_FILES[$input_name])) {
-            $filename = md5(time() . basename($_FILES[$input_name]['name']));
+            if ($name === '') {
+                $filename = md5(time() . basename($_FILES[$input_name]['name']));
+            } else {
+                $filename = $name;
+            }
             $path = $path . $filename;
             // var_dump($filename);exit;
             if(move_uploaded_file($_FILES[$input_name]['tmp_name'], $path)) {

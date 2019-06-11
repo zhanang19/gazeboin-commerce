@@ -16,6 +16,13 @@ class Order
         self::$db = new Database;
     }
 
+    public static function all()
+    {
+        self::$db->query("SELECT * FROM orders");
+        self::$db->execute();
+        return self::$db->fetch();
+    }
+
     public static function create($id_user = 0)
     {
         self::$db->query("INSERT INTO orders (id_user, status) VALUES (:id_user, :status)");

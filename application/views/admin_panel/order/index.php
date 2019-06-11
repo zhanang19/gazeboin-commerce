@@ -57,9 +57,9 @@
                                                 ?>
                                                 <span class="badge badge-<?= $status ?>"><?= $row['status'] ?></span>
                                             </td>
-                                            <td><?= $row['total_price'] ?></td>
+                                            <td>Rp. <?= number_format($row['total_price'], 0, ',', '.') ?></td>
                                             <td>
-                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/category/edit/' . $row['id']) ?>" title="Edit Category">
+                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/order/paid/' . $row['id']) ?>" title="Edit Category">
                                                     <i class="material-icons">edit</i>
                                                 </a>
                                             </td>
