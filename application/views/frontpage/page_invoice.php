@@ -92,15 +92,15 @@
                             </tbody>
                             <tfoot class="table-info">
                                 <tr>
-                                    <td class="font-weight-bold" colspan="2" style="width: 80%">SUBTOTAL</td>
+                                    <td class="font-weight-bold" colspan="<?= $data['order']['status'] === 'paid' ? '2' : '1' ?>" style="width: 80%">SUBTOTAL</td>
                                     <td class="text-right">Rp. <?= number_format($data['total_order'] - $data['id_user'], 0, ',', '.') ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="font-weight-bold" colspan="2" style="width: 80%">UNIQUE CODE</td>
+                                    <td class="font-weight-bold" colspan="<?= $data['order']['status'] === 'paid' ? '2' : '1' ?>" style="width: 80%">UNIQUE CODE</td>
                                     <td class="text-right">Rp. <?= number_format($data['id_user'], 0, ',', '.') ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="font-weight-bold" colspan="2" style="width: 80%">TOTAL</td>
+                                    <td class="font-weight-bold" colspan="<?= $data['order']['status'] === 'paid' ? '2' : '1' ?>" style="width: 80%">TOTAL</td>
                                     <td class="text-right">Rp. <?= number_format($data['total_order'], 0, ',', '.') ?></td>
                                 </tr>
                             </tfoot>
