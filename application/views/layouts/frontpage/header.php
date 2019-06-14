@@ -99,9 +99,11 @@
 				</li>
 				<?php else: ?>
 				<li class="nav-item mx-1">
-					<a href="<?= get_userdata('level') === '1' ? base_url('admin/dashboard') : base_url('user/dashboard') ?>" class="nav-link waves-effect">
+					<?php if (get_userdata('level') === '1') : ?>
+					<a href="<?= base_url('admin/dashboard') ?>" class="nav-link waves-effect">
 						<i class="fa fa-tachometer-alt mr-2"></i> Dashboard
 					</a>
+					<?php endif; ?>
 				</li>
 				<li class="nav-item mx-1">
 					<a href="<?= base_url('page/logout') ?>" class="nav-link border border-light rounded waves-effect">

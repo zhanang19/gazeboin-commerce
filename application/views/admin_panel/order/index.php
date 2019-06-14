@@ -29,7 +29,7 @@
                                             <th>Customer Name</th>
                                             <th>Status</th>
                                             <th>Total Price</th>
-                                            <th>Action</th>
+                                            <th style="text-align:center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -58,10 +58,27 @@
                                                 <span class="badge badge-<?= $status ?>"><?= $row['status'] ?></span>
                                             </td>
                                             <td>Rp. <?= number_format($row['total_price'], 0, ',', '.') ?></td>
-                                            <td>
-                                                <a class="btn btn-success btn-just-icon btn-link btn-edit" href="<?= base_url('admin/order/paid/' . $row['id']) ?>" title="Edit Category">
-                                                    <i class="material-icons">edit</i>
+                                            <td style="text-align:center">
+                                                <a class="btn btn-info btn-just-icon btn-link" href="<?= base_url('invoice/detail/' . $row['id']) ?>" title="View detail">
+                                                    <i class="material-icons">info</i>
                                                 </a>
+                                                <?php if ($row['status'] === 'confirm transfer') : ?>
+                                                <a class="btn btn-success btn-just-icon btn-link" href="<?= base_url('admin/order/paid/' . $row['id']) ?>" title="Mark as paid">
+                                                    <i class="material-icons">check</i>
+                                                </a>
+                                                <?php elseif ($row['status'] === 'unpaid') : ?>
+                                                <a class="btn btn-danger btn-just-icon btn-link" href="<?= base_url('admin/order/cancel/' . $row['id']) ?>" title="Mark as canceled">
+                                                    <i class="material-icons">clear</i>
+                                                </a>
+                                                <?php elseif ($row['status'] === 'paid') : ?>
+                                                <a class="btn btn-default btn-just-icon btn-link" href="<?= base_url('admin/order/confirm-transfer/' . $row['id']) ?>" title="Mark as transfer confirmed">
+                                                    <i class="material-icons">undo</i>
+                                                </a>
+                                                <?php elseif ($row['status'] === 'cancel') : ?>
+                                                <a class="btn btn-primary btn-just-icon btn-link" href="<?= base_url('admin/order/unpaid/' . $row['id']) ?>" title="Mark as unpaid">
+                                                    <i class="material-icons">undo</i>
+                                                </a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>

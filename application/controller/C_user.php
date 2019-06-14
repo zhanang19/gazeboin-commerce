@@ -7,12 +7,11 @@
  * Project: e-commerce
  */
 
-class C_admin extends Controller
+class C_user extends Controller
 {
     public function __construct()
     {
         $this->isLogin();
-        $this->isAdmin();
         $this->model('User');
         $this->model('Category');
         $this->model('Product');
@@ -22,7 +21,7 @@ class C_admin extends Controller
 
     public function index()
     {
-        redirect('admin/dashboard');
+        redirect('user/dashboard');
     }
 
     public function dashboard()
@@ -345,30 +344,46 @@ class C_admin extends Controller
                 $this->view('admin_panel/order/index', $data);
                 $this->view('layouts/panel/footer', $data);
                 unset_old();
-                exit;
                 break;
             case 'paid':
                 $result = Order::status($id, 'paid');
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Order updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update order', 'error');
+                }
+                redirect('admin/order');
                 break;
             case 'confirm-transfer':
                 $result = Order::status($id, 'confirm transfer');
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Order updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update order', 'error');
+                }
+                redirect('admin/order');
                 break;
             case 'unpaid':
                 $result = Order::status($id, 'unpaid');
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Order updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update order', 'error');
+                }
+                redirect('admin/order');
                 break;
             case 'cancel':
                 $result = Order::status($id, 'cancel');
+                if ($result > 0) {
+                    set_flashdata('Request Success', 'Order updated successfully', 'success');
+                } else {
+                    set_flashdata('Request Failed', 'Failed to update order', 'error');
+                }
+                redirect('admin/order');
                 break;
             default:
                 abort(404, 'Action not found');
                 break;
         }
-        if ($result > 0) {
-            set_flashdata('Request Success', 'Order updated successfully', 'success');
-        } else {
-            set_flashdata('Request Failed', 'Failed to update order', 'error');
-        }
-        redirect('admin/order');
     }
-        
 }

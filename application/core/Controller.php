@@ -112,7 +112,7 @@ class Controller {
         if ($_SESSION['user']['level'] === '1') {
             redirect('admin/dashboard');
         } else {
-            redirect('user/dashboard');
+            redirect();
         }
     }
     

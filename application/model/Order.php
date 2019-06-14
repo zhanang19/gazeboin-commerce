@@ -32,6 +32,12 @@ class Order
         return self::$db->lastInsertId();
     }
 
+    public static function getAsAdmin($id_order = 0)
+    {
+        self::$db->query("SELECT u.name, u.email, u.address, u.timestamp, o.* FROM orders AS o JOIN users AS u ON u.id = o.id_user WHERE o.id = :id");
+        self::$db->bind('id', $id_order);
+        return self::$db->first();
+    }
     public static function get($id_order = 0, $id_user = 0)
     {
         self::$db->query("SELECT u.name, u.email, u.address, u.timestamp, o.* FROM orders AS o JOIN users AS u ON u.id = o.id_user WHERE o.id = :id AND o.id_user = :id_user");
@@ -51,7 +57,7 @@ class Order
 
     public static function count($id_user = 0)
     {
-        return (int) self::$db->countRows("carts", 'id_user', $id_user);
+        return (int) self::$db->countRows("orders", 'id_user', $id_user);
     }
 
 }

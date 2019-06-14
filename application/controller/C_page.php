@@ -59,7 +59,7 @@ class C_page extends Controller
             if ($result['level'] === 1) {
                 $link = base_url('admin/dashboard');
             } else {
-                $link = base_url('user/dashboard');
+                $link = base_url();
             }
             $this->json([
                 'link' => $link
@@ -162,13 +162,13 @@ class C_page extends Controller
             $token = decrypt($token);
             $token = strpos($token, '::') ? explode('::', $token) : abort(404, 'Invalid token! Make sure you are insert a link correctly.');
             $id_user = $this->getUserdata('id_user');
-            if (! $id_user === $token[0]) {
-                error_log('User with ID ' . $id_user . ' trying to steal a product file from IP Address ' . $_SERVER['REMOTE_ADDR']);
-                abort(401, 'Hey, please don\'t try to steal. You\'re reported!');
+            if ($id_user === $token[0]) {
+                $product_slug = $token[1];
+                $file = ASSET . $product_slug . '.zip';
+                download($file);
             }
-            $product_slug = $token[1];
-            $file = ASSET . $product_slug . '.zip';
-            download($file);
+            error_log('User with ID ' . $id_user . ' trying to steal a product file from IP Address ' . $_SERVER['REMOTE_ADDR']);
+            abort(401, 'Hey, please don\'t try to steal. You\'re reported!');
         }
     }
 }

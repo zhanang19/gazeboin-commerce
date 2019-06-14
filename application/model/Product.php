@@ -126,7 +126,7 @@ class Product
 
     public static function countByCategory($category_slug = '')
     {
-        self::$db->query("SELECT COUNT(p.id) as row_count FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug AND status = 1");
+        self::$db->query("SELECT COUNT(p.id) as row_count FROM products AS p JOIN categories AS c ON c.id = p.id_category WHERE category_slug = :category_slug AND p.status = 1");
         self::$db->bind('category_slug', $category_slug);
         // var_dump(self::$db->first());exit();
         return self::$db->first()['row_count'];

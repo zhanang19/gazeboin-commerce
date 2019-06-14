@@ -21,7 +21,12 @@ class C_invoice extends Controller
     {
         $id_user = $this->getUserdata('id_user');
         $data['id_user'] = $id_user;
-        $data['order'] = Order::get($id_order, $id_user) ?: abort(404, "Invoice $id_order not found");
+        if ($this->getUserdata('level') === '1') {
+            $data['order'] = Order::getAsAdmin($id_order) ?: abort(404, "Invoice $id_order not found");
+        } else {
+            $data['order'] = Order::get($id_order, $id_user) ?: abort(404, "Invoice $id_order not found");
+        }
+        
         $data['id_order'] = $id_order;
         $data['total_order'] = OrderDetail::totalPrice($id_order) + $id_user;
         $data['order_detail'] = OrderDetail::get($id_order);
