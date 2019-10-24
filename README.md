@@ -18,7 +18,7 @@
 
 ## Installation
  - Clone or [download](https://github.com/zhanang19/gazeboin-shop/archive/master.zip) this repository
- - Import [SQL file](https://bmc.xyz/l/gazsql)
+ - Import SQL file
  - Perform the configuration at ```application/config/config.php```
  - Open project on your browser
 
